@@ -10,11 +10,23 @@ pipeline {
         sh 'npm install'
       }
     }
+
+    stage('OWASP Dependency Check') {
+      steps {
+        dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
+      }
+    }
      
     stage('Test') {
       steps {
-         sh './script/test'
+        sh './script/test'
       }
     }      
+  }
+
+  post {
+    success {
+      dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+    }
   }
 }
