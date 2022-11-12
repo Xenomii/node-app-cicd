@@ -5,7 +5,7 @@ pipeline {
         
     stage('Git') {
       steps {
-        git 'https://github.com/Xenomii/node-app-cicd'
+        git 'git@github.com:Xenomii/node-app-cicd.git'
       }
     }
      
