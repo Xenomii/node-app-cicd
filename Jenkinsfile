@@ -2,13 +2,17 @@ pipeline {
   agent none
   stages {
     stage('Unit Test') {
-      agent {
-        docker {
-          image 'node'
-        }
-        steps {
-          sh 'npm install'
-          sh './script/test.sh'
+      parrallel{
+        stage('Node Test') {
+          agent {
+            docker {
+              image 'node:8'
+            }
+          }
+          steps {
+            sh 'npm install'
+            sh './script/test.sh'
+          }
         }
       }
     }
