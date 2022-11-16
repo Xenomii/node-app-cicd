@@ -12,12 +12,12 @@ pipeline {
         stage('Node Test') {
           agent {
             docker {
-              image 'node:8'
+              image 'node'
             }
           }
           steps {
             sh 'npm install'
-            sh './script/test.sh'
+            sh 'npm test'
           }
         }
       }
