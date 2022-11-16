@@ -8,7 +8,7 @@ pipeline {
       }
     }
     stage('Unit Test') {
-      parrallel {
+      parallel {
         stage('Node Test') {
           agent {
             docker {
