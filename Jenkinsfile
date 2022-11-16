@@ -1,8 +1,14 @@
 pipeline {
   agent none
   stages {
+    stage('OWASP Dependency Check') {
+      agent any
+      steps {
+        dependencyCheck additionalArguments: '--format HTML --format XML --disableNodeAudit --disableYarnAudit ', odcInstallation: 'Default'
+      }
+    }
     stage('Unit Test') {
-      parrallel{
+      parrallel {
         stage('Node Test') {
           agent {
             docker {
@@ -14,11 +20,6 @@ pipeline {
             sh './script/test.sh'
           }
         }
-      }
-    }
-    stage('OWASP Dependency Check') {
-      steps {
-        dependencyCheck additionalArguments: '--format HTML --format XML --disableNodeAudit --disableYarnAudit ', odcInstallation: 'Default'
       }
     }
   }
