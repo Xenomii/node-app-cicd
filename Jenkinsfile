@@ -1,32 +1,26 @@
 pipeline {
-  agent any
-    
-  tools {nodejs "node"}
-    
+  agent none
   stages {
-        
-    stage('Install dependencies') {
-      steps {
-        sh 'npm install'
+    stage('Unit Test') {
+      agent {
+        docker {
+          image 'node'
+        }
+        steps {
+          sh 'npm install'
+          sh './script/test.sh'
+        }
       }
     }
-
     stage('OWASP Dependency Check') {
       steps {
         dependencyCheck additionalArguments: '--format HTML --format XML --disableNodeAudit --disableYarnAudit ', odcInstallation: 'Default'
       }
     }
-     
-    stage('Test') {
-      steps {
-        sh './script/test'
-      }
-    }      
   }
-
   post {
     success {
-      dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+      dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
     }
   }
 }
