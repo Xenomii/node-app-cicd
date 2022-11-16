@@ -25,8 +25,9 @@ pipeline {
   }
   post {
     success {
-      agent any
-      dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+      node(null) {
+        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+      }
     }
   }
 }
